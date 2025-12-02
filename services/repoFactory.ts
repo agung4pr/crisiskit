@@ -4,34 +4,56 @@ import { InMemoryRepo } from './InMemoryRepo';
 // Declare require to avoid TypeScript errors when @types/node is not available
 declare const require: any;
 
-// This factory handles the logic to switch between InMemory and Google Sheets.
-// In a real environment, this would run on the server.
+/**
+ * Repository Factory - Automatically selects the best storage backend
+ *
+ * Priority order:
+ * 1. Supabase (if VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set)
+ * 2. Google Sheets (if GOOGLE_SHEETS_* env vars are set) - Server-side only
+ * 3. InMemory/localStorage (default fallback)
+ *
+ * For users who want to use their own backend:
+ * - Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local
+ * - Run the SQL schema in /database/supabase-schema.sql
+ */
 export function createIncidentsRepo(): IncidentsRepo {
-  // Check if we are running in a Node.js environment with access to Env Vars
-  const hasEnvVars = 
-    typeof process !== 'undefined' && 
-    process.env && 
+  // Option 1: Check for Supabase configuration (works in browser)
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const { SupabaseRepo } = require('./SupabaseRepo');
+      console.log('✅ Using Supabase backend');
+      return new SupabaseRepo(supabaseUrl, supabaseKey);
+    } catch (error) {
+      console.warn('⚠️ Failed to load SupabaseRepo. Install @supabase/supabase-js. Falling back to InMemory.', error);
+    }
+  }
+
+  // Option 2: Check for Google Sheets configuration (server-side only)
+  const hasGoogleSheetsEnv =
+    typeof process !== 'undefined' &&
+    process.env &&
     process.env.GOOGLE_SHEETS_SPREADSHEET_ID &&
     process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
     process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
 
-  if (hasEnvVars) {
+  if (hasGoogleSheetsEnv) {
     try {
-      // We use a dynamic require to avoid bundling 'googleapis' in the client-side browser bundle.
-      // In a Next.js server component or API route, this require would resolve correctly.
       const { GoogleSheetsRepo } = require('./GoogleSheetsRepo');
-      
-      console.log('Initializing Google Sheets Repository...');
+      console.log('✅ Using Google Sheets backend');
       return new GoogleSheetsRepo(
         process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL!,
         process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY!,
         process.env.GOOGLE_SHEETS_SPREADSHEET_ID!
       );
     } catch (error) {
-      console.warn('Failed to load GoogleSheetsRepo (likely missing googleapis dependency or running in browser). Falling back to InMemory.', error);
+      console.warn('⚠️ Failed to load GoogleSheetsRepo. Falling back to InMemory.', error);
     }
   }
 
-  // Default fallback
+  // Option 3: Default fallback - localStorage (works everywhere)
+  console.log('📦 Using localStorage backend (no cloud config detected)');
   return new InMemoryRepo();
 }
