@@ -10,7 +10,8 @@ import { RelativeTime } from '../components/RelativeTime';
 import { exportToCSV } from '../utils/csvExport';
 import { exportToGoogleSheets } from '../utils/googleSheetsExport';
 import { ResponseStatus } from '../types';
-import { ArrowLeft, Share2, RefreshCw, AlertCircle, FileText, ExternalLink, Download, Sheet } from 'lucide-react';
+import { ArrowLeft, Share2, RefreshCw, AlertCircle, FileText, ExternalLink, Download, Sheet, Settings } from 'lucide-react';
+import { GoogleSheetsSetup } from '../components/GoogleSheetsSetup';
 
 export const IncidentDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,6 +21,7 @@ export const IncidentDashboard: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [regionFilter, setRegionFilter] = useState<string>('');
   const [districtFilter, setDistrictFilter] = useState<string>('');
+  const [showSheetsSetup, setShowSheetsSetup] = useState(false);
 
   const loadData = useCallback(async () => {
     if (!id) return;
@@ -159,6 +161,10 @@ export const IncidentDashboard: React.FC = () => {
           <Button onClick={runAIAnalysis} variant="secondary" disabled={isAnalyzing || responses.length === 0}>
              <RefreshCw className={`mr-2 h-4 w-4 ${isAnalyzing ? 'animate-spin' : ''}`} />
              {isAnalyzing ? 'Analyzing...' : 'Run AI Triage'}
+          </Button>
+          <Button onClick={() => setShowSheetsSetup(true)} variant="secondary">
+            <Settings className="mr-2 h-4 w-4" />
+            Auto-Sync Setup
           </Button>
           <Button onClick={handleExportToSheets} variant="secondary" disabled={responses.length === 0}>
             <Sheet className="mr-2 h-4 w-4" />
@@ -336,6 +342,11 @@ export const IncidentDashboard: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Google Sheets Setup Modal */}
+      {showSheetsSetup && id && (
+        <GoogleSheetsSetup incidentId={id} onClose={() => setShowSheetsSetup(false)} />
+      )}
     </div>
   );
 };

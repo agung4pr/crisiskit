@@ -1,9 +1,10 @@
 # CrisisKit Lite 🚨
 
-> **A lightweight, rapid-response crisis form generator**
+> **10-second crisis data collection with AI triage**
+> Share a link. Collect needs. Export to Google Sheets.
 > Born from real disaster. Built for communities.
 
-[Live Demo](#) • [Design Philosophy](https://github.com/sparksverse/crisiskit-lite/blob/main/DESIGN_NOTES.md) • [Quick Start](#quick-start) • [Contributing](#contributing)
+[Live Demo](https://sos.sparkbeacon.org) • [Design Philosophy](./pages/DesignNotes.tsx) • [Quick Start](#quick-start) • [Setup Guide](./SETUP.md)
 
 ---
 
@@ -33,21 +34,51 @@ What stood out wasn't the sophistication, but the **incredible resilience of low
 
 ---
 
+## 🎯 What CrisisKit Does
+
+**CrisisKit is the bridge between affected people and volunteer teams:**
+
+```
+Affected People → CrisisKit Form → AI Triage → Google Sheets → Volunteers
+```
+
+### Why Not Just Use Google Forms + Sheets?
+
+**Google Forms**:
+- ❌ Takes 15+ minutes to set up
+- ❌ Poor mobile UX
+- ❌ No AI triage
+- ❌ No duplicate detection
+- ❌ No urgency-based sorting
+
+**CrisisKit**:
+- ✅ **10 seconds** to create
+- ✅ Mobile-optimized (SOS location button, large tap targets)
+- ✅ **AI auto-classifies** urgency
+- ✅ Duplicate detection
+- ✅ Auto-sorts by urgency
+- ✅ **One-click export to Google Sheets** for volunteer collaboration
+
+---
+
 ## ✨ Features
 
-###🎯 **For Crisis Organizers**
+### 🎯 **For Crisis Organizers**
 
-- **1-Click Form Creation** - Generate a crisis collection form in seconds, no account needed
-- **Instant Public Link** - Share a simple URL via WhatsApp, SMS, or social media
-- **AI-Powered Triage** - Automatic urgency classification (Critical/Moderate/Low) using Gemini AI
-- **Fallback Heuristics** - Keyword-based classification when AI is unavailable
-- **CSV Export** - Download all responses for offline analysis
-- **Google Sheets Backend** - Optionally store data in Sheets for volunteer collaboration
+- **10-Second Form Creation** - No account, no setup, just create and share
+- **AI-Powered Triage** - Gemini AI classifies Critical/Moderate/Low urgency
+- **Smart Duplicate Detection** - Prevents spam, tracks updates
+- **Region/District Selection** - Pre-configured location dropdowns (Hong Kong, LA, etc.)
+- **Real-Time Dashboard** - Color-coded urgency, status tracking, filtering
+- **Real-Time Google Sheets Sync** - Auto-sync new submissions to your Sheet via webhook
+- **One-Click Google Sheets Export** - Copy-paste ready for team collaboration
+- **Data Portability** - Import/export JSON backups
 
 ### 👥 **For Affected People**
 
-- **Mobile-First Design** - Fill forms on phones, in shelters, or on the street
-- **Minimal Fields** - Name, contact, needs, location—that's it
+- **Mobile-First Design** - Large buttons, clear labels, works on any phone
+- **SOS Location Button** - One-tap GPS + Google Maps link
+- **Minimal Friction** - Only essential fields (Name, Contact, Location, Needs)
 - **No Login Required** - Submit help requests immediately
 - **Privacy-Conscious** - Data stays with community organizers
 
@@ -104,7 +135,27 @@ VITE_GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n..."
 
 See [.env.example](.env.example) for full configuration template.
 
-### Google Sheets Setup
+### Google Sheets Auto-Sync (Recommended)
+
+**For real-time automatic syncing to Google Sheets:**
+
+1. Create a new Google Sheet
+2. Go to **Extensions** → **Apps Script**
+3. Paste the webhook script (provided in the CrisisKit dashboard)
+4. Deploy as **Web App** (Execute as: Me, Access: Anyone)
+5. Copy the webhook URL
+6. In CrisisKit dashboard, click **"Auto-Sync Setup"** and paste the URL
+7. Done! ✅ New submissions will automatically appear in your Sheet
+
+**Benefits:**
+- Zero manual copy-paste
+- Data appears instantly in Google Sheets
+- Color-coded by urgency (Red/Yellow/White)
+- Perfect for volunteer teams already using Sheets
+
+### Google Sheets Backend (Advanced)
+
+**For storing all data in Google Sheets (not just syncing):**
 
 1. Create a Google Cloud project
 2. Enable Google Sheets API
@@ -184,8 +235,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 - [x] 1-click incident creation
 - [x] AI urgency classification
 - [x] CSV export
+- [x] Google Sheets auto-sync webhook
 - [x] Google Sheets backend
 - [x] Mobile-responsive design
+- [x] Region/District location selection
 
 **v2.0** (Planned)
 - [ ] Form customization (add custom fields)

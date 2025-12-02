@@ -115,8 +115,8 @@ export const Home: React.FC = () => {
           CrisisKit Lite
         </h1>
         <p className="text-lg text-gray-500 max-w-xl mx-auto">
-          Rapidly deploy data collection forms for emergencies. 
-          Analyze needs with AI. No complex setup required.
+          10-second crisis data collection with AI triage.<br />
+          Share a link. Collect needs. Export to Google Sheets.
         </p>
       </div>
 
@@ -203,24 +203,36 @@ export const Home: React.FC = () => {
           </div>
           
           <p className="text-lg leading-relaxed mb-6">
-            A tiny open-source <strong>crisis form generator</strong> to help communities collect and triage information in emergencies — in seconds, not hours.
+            <strong>CrisisKit is the bridge between affected people and volunteer teams:</strong>
           </p>
 
-          <div className="bg-gray-50 border-l-4 border-primary-500 p-4 rounded-r-lg mb-8">
-            <p className="italic text-gray-700">
-              When disaster hits, people don’t have time to design a form, set up a database, or learn a complex system.
-              In reality, volunteers and neighbours often hack together <strong>Google Sheets + WhatsApp + screenshots</strong> to coordinate help. It’s messy, but it works — because it’s fast.
+          <div className="bg-gray-50 border-2 border-gray-200 p-6 rounded-lg mb-8 text-center font-mono text-sm">
+            <p className="text-gray-700">
+              Affected People → <strong className="text-primary-600">CrisisKit Form</strong> → <strong className="text-primary-600">AI Triage</strong> → Google Sheets → Volunteers
+            </p>
+          </div>
+
+          <div className="bg-primary-50 border-l-4 border-primary-500 p-4 rounded-r-lg mb-8">
+            <p className="font-semibold text-gray-900 mb-2">Why Not Just Use Google Forms + Sheets?</p>
+            <p className="text-gray-700 mb-3">
+              <strong>Google Forms</strong> take 15+ minutes to set up, have poor mobile UX, no AI triage, and no duplicate detection.
+            </p>
+            <p className="text-gray-700">
+              <strong>CrisisKit</strong> takes 10 seconds to create, is mobile-optimized with SOS location button,
+              auto-classifies urgency with AI, detects duplicates, and exports directly to Google Sheets with one click.
             </p>
           </div>
 
           <p className="mb-4">
-            <strong>CrisisKit Lite</strong> is a minimal tool that sits exactly in this gap:
+            <strong>What CrisisKit Does:</strong>
           </p>
           <ul className="list-disc pl-5 space-y-2 mb-8">
-             <li>Let anyone create a crisis collection form in a few seconds</li>
-             <li>Share a simple public link with affected people</li>
-             <li>See incoming submissions with a basic urgency classification (Red / Yellow / Green)</li>
-             <li>Optionally store everything in <strong>Google Sheets</strong>, so volunteers can keep using the tools they already know</li>
+             <li><strong>10-Second Form Creation</strong> - No account, no setup, just create and share</li>
+             <li><strong>Mobile-First Design</strong> - Large buttons, SOS location button, works on any phone</li>
+             <li><strong>AI-Powered Triage</strong> - Gemini AI classifies Critical/Moderate/Low urgency automatically</li>
+             <li><strong>Smart Duplicate Detection</strong> - Prevents spam, tracks updates from same contact</li>
+             <li><strong>One-Click Google Sheets Export</strong> - Copy-paste ready for volunteer collaboration</li>
+             <li><strong>Region/District Selection</strong> - Pre-configured dropdowns for fast location tracking</li>
           </ul>
 
           <div className="text-center mt-8">

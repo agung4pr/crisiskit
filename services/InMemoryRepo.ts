@@ -1,4 +1,5 @@
 import { Incident, IncidentResponse, IncidentsRepo } from '../types';
+import { GoogleSheetsWebhookService } from './googleSheetsWebhook';
 
 const STORAGE_KEYS = {
   INCIDENTS: 'crisiskit_incidents',
@@ -43,7 +44,7 @@ export class InMemoryRepo implements IncidentsRepo {
   async submitResponse(response: Omit<IncidentResponse, 'id' | 'submittedAt'>): Promise<IncidentResponse> {
     const data = localStorage.getItem(STORAGE_KEYS.RESPONSES);
     const allResponses: IncidentResponse[] = data ? JSON.parse(data) : [];
-    
+
     const newResponse: IncidentResponse = {
       ...response,
       id: crypto.randomUUID(),
@@ -51,6 +52,11 @@ export class InMemoryRepo implements IncidentsRepo {
     };
 
     localStorage.setItem(STORAGE_KEYS.RESPONSES, JSON.stringify([newResponse, ...allResponses]));
+
+    // Auto-sync to Google Sheets webhook if configured
+    GoogleSheetsWebhookService.sendToWebhook(response.incidentId, newResponse)
+      .catch(err => console.warn('Webhook sync failed (non-critical):', err));
+
     return newResponse;
   }
 
