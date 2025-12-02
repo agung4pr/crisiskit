@@ -9,7 +9,7 @@
 
 ## 🔥 The Story
 
-In late 2024, during a major residential fire in Hong Kong, thousands of people scrambled for information, safety updates, and help. While official channels were slow, **ordinary citizens self-organized** using improvised tools:
+In late 2025, during a major residential fire in Hong Kong, thousands of people scrambled for information, safety updates, and help. While official channels were slow, **ordinary citizens self-organized** using improvised tools:
 
 - Google Forms & Sheets
 - WhatsApp broadcasts
