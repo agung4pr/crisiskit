@@ -22,9 +22,16 @@ export const PublicSubmit: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
+    region: '',
+    district: '',
     location: '',
     needs: ''
   });
+
+  // Get available districts based on selected region
+  const availableDistricts = formData.region && incident?.regions
+    ? incident.regions.find(r => r.name === formData.region)?.districts || []
+    : [];
 
   useEffect(() => {
     const load = async () => {
@@ -92,10 +99,17 @@ export const PublicSubmit: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      await storageService.submitResponse({
+      const submissionData = {
         incidentId: id,
-        ...formData
-      });
+        name: formData.name,
+        contact: formData.contact,
+        needs: formData.needs,
+        location: formData.location,
+        ...(formData.region && { region: formData.region }),
+        ...(formData.district && { district: formData.district })
+      };
+
+      await storageService.submitResponse(submissionData);
       setSubmitted(true);
       setDuplicateWarning(null);
       window.scrollTo(0, 0);
@@ -202,10 +216,55 @@ export const PublicSubmit: React.FC = () => {
               required
             />
 
+            {/* Region/District Selection (if configured) */}
+            {incident?.regions && incident.regions.length > 0 && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Region <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.region}
+                    onChange={e => setFormData({...formData, region: e.target.value, district: ''})}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  >
+                    <option value="">-- Select Region --</option>
+                    {incident.regions.map(region => (
+                      <option key={region.name} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {formData.region && availableDistricts.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      District <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={formData.district}
+                      onChange={e => setFormData({...formData, district: e.target.value})}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    >
+                      <option value="">-- Select District --</option>
+                      {availableDistricts.map(district => (
+                        <option key={district} value={district}>
+                          {district}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="relative">
                 <Input
-                label="Current Location"
-                placeholder="Address, Building, or use SOS button"
+                label="Detailed Address/Building"
+                placeholder="Room number, Building name, Street, or use SOS button"
                 value={formData.location}
                 onChange={e => setFormData({...formData, location: e.target.value})}
                 required

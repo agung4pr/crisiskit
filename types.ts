@@ -1,11 +1,17 @@
 export type UrgencyLevel = 'CRITICAL' | 'MODERATE' | 'LOW' | 'UNKNOWN';
 export type ResponseStatus = 'pending' | 'in_progress' | 'resolved' | 'duplicate';
 
+export interface Region {
+  name: string;
+  districts: string[];
+}
+
 export interface Incident {
   id: string;
   title: string;
   description: string;
   createdAt: number;
+  regions?: Region[]; // Optional: Configured regions for location selection
 }
 
 export interface IncidentResponse {
@@ -15,6 +21,8 @@ export interface IncidentResponse {
   contact: string;
   needs: string;
   location: string;
+  region?: string; // Selected region (e.g., "Hong Kong", "Kowloon")
+  district?: string; // Selected district (e.g., "Sha Tin", "Mong Kok")
   submittedAt: number;
   status?: ResponseStatus;
   assignedTo?: string;

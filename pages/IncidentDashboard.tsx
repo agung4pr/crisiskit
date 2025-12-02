@@ -17,6 +17,8 @@ export const IncidentDashboard: React.FC = () => {
   const [responses, setResponses] = useState<IncidentResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [regionFilter, setRegionFilter] = useState<string>('');
+  const [districtFilter, setDistrictFilter] = useState<string>('');
 
   const loadData = useCallback(async () => {
     if (!id) return;
@@ -119,6 +121,20 @@ export const IncidentDashboard: React.FC = () => {
   if (loading) return <div className="p-12 text-center text-gray-500">Loading incident data...</div>;
   if (!incident) return <div className="p-12 text-center text-danger-500">Incident not found.</div>;
 
+  // Get unique regions and districts for filtering
+  const uniqueRegions = [...new Set(responses.map(r => r.region).filter(Boolean))];
+  const filteredByRegion = regionFilter
+    ? responses.filter(r => r.region === regionFilter)
+    : responses;
+  const uniqueDistricts = [...new Set(filteredByRegion.map(r => r.district).filter(Boolean))];
+
+  // Apply filters
+  const filteredResponses = responses.filter(r => {
+    if (regionFilter && r.region !== regionFilter) return false;
+    if (districtFilter && r.district !== districtFilter) return false;
+    return true;
+  });
+
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -148,14 +164,78 @@ export const IncidentDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Region/District Filters */}
+      {uniqueRegions.length > 0 && (
+        <div className="mb-6 flex flex-wrap gap-3 items-center">
+          <span className="text-sm font-medium text-gray-700">Filter by:</span>
+          <select
+            value={regionFilter}
+            onChange={(e) => {
+              setRegionFilter(e.target.value);
+              setDistrictFilter('');
+            }}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500"
+          >
+            <option value="">All Regions ({responses.length})</option>
+            {uniqueRegions.map(region => (
+              <option key={region} value={region}>
+                {region} ({responses.filter(r => r.region === region).length})
+              </option>
+            ))}
+          </select>
+
+          {regionFilter && uniqueDistricts.length > 0 && (
+            <select
+              value={districtFilter}
+              onChange={(e) => setDistrictFilter(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="">All Districts ({filteredByRegion.length})</option>
+              {uniqueDistricts.map(district => (
+                <option key={district} value={district}>
+                  {district} ({filteredByRegion.filter(r => r.district === district).length})
+                </option>
+              ))}
+            </select>
+          )}
+
+          {(regionFilter || districtFilter) && (
+            <button
+              onClick={() => {
+                setRegionFilter('');
+                setDistrictFilter('');
+              }}
+              className="text-sm text-primary-600 hover:text-primary-800 font-medium"
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+      )}
+
       <div className="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-        {responses.length === 0 ? (
-          <div className="p-12 text-center">
-            <FileText className="mx-auto h-12 w-12 text-gray-300 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900">No responses yet</h3>
-            <p className="text-gray-500 mt-1 mb-6">Share the public link to start collecting needs.</p>
-            <Button onClick={copyPublicLink} variant="secondary">Copy Link</Button>
-          </div>
+        {filteredResponses.length === 0 ? (
+          responses.length === 0 ? (
+            <div className="p-12 text-center">
+              <FileText className="mx-auto h-12 w-12 text-gray-300 mb-4" />
+              <h3 className="text-lg font-medium text-gray-900">No responses yet</h3>
+              <p className="text-gray-500 mt-1 mb-6">Share the public link to start collecting needs.</p>
+              <Button onClick={copyPublicLink} variant="secondary">Copy Link</Button>
+            </div>
+          ) : (
+            <div className="p-12 text-center">
+              <p className="text-gray-500">No responses match the selected filters.</p>
+              <button
+                onClick={() => {
+                  setRegionFilter('');
+                  setDistrictFilter('');
+                }}
+                className="mt-4 text-sm text-primary-600 hover:text-primary-800 font-medium"
+              >
+                Clear filters
+              </button>
+            </div>
+          )
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -170,7 +250,7 @@ export const IncidentDashboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {responses.map((response) => {
+                {filteredResponses.map((response) => {
                   const urgency = response.aiClassification?.urgency || 'UNKNOWN';
                   const rowClass = urgency === 'CRITICAL'
                     ? 'bg-red-50 hover:bg-red-100 border-l-4 border-red-500'
@@ -203,8 +283,15 @@ export const IncidentDashboard: React.FC = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-gray-900 line-clamp-2">{response.needs}</div>
-                      <div className="text-xs text-gray-500 mt-1 break-words">
-                        {renderLocation(response.location)}
+                      <div className="text-xs text-gray-500 mt-1 space-y-0.5">
+                        {response.region && (
+                          <div className="font-medium text-gray-700">
+                            📍 {response.region}{response.district && ` • ${response.district}`}
+                          </div>
+                        )}
+                        <div className="break-words">
+                          {renderLocation(response.location)}
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
